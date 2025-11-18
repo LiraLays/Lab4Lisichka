@@ -5,8 +5,180 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfLab4"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Лабораторная работа №4" Height="600" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0" Text="Логические функции" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+        
+        <!-- Основная область -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                
+                <!-- Expander для ввода функций -->
+                <Expander IsExpanded="True"
+                          Margin="0,0,0,5"
+                          Header="Ввод функций">
+                    <Grid Background="#FFE5E5E5" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Функция 1-->
+                        <GroupBox Grid.Column="0"
+                                  Header="Функция 1">
+                            <StackPanel>
+                                <TextBox x:Name="Function1Input"
+                                         Text="{Binding Function1Input}"
+                                         Margin ="5"
+                                         Height= "25"
+                                         />
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center">
+                                    <Button Content="Из номера"
+                                            Command="{Binding BuildFunction1FromNumberCommand}"
+                                            Margin="5"
+                                            Padding="10, 3"/>
+                                    <Button Content="Из формулы"
+                                            Command="{Binding BuildFunction1FromFormulaCommand}"
+                                            Margin="5"
+                                            Padding="10, 3"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                        
+                        <!-- Функция 2 -->
+                        <GroupBox Grid.Column="2"
+                                  Header="Функция 2">
+                            <StackPanel>
+                                <TextBox x:Name="Function2Input"
+                                         Text="{Binding Function2Input}"
+                                         Margin="5"
+                                         Height="25" />
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center">
+                                    <Button Content="Из номера"
+                                            Command="{Binding BuildFunction2FromNumberCommand}"
+                                            Margin="5"
+                                            Padding="10, 3" />
+                                    <Button Content="Из формулы"
+                                            Command="{Binding BuildFunction2FromFormulaCommand}"
+                                            Margin="5"
+                                            Padding="10, 3" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </Expander>
+
+                <Expander Header="Результаты для Функции 1"
+                          IsExpanded="{Binding IsFunction1Expanded}"
+                          Margin="0,0,0,5">
+                    <TabControl>
+                        <TabItem Header="Таблица истинности">
+                            <DataGrid ItemsSource="{Binding TruthTable1, Mode=OneWay}"
+                                      AutoGenerateColumns="True"
+                                      IsReadOnly="True"
+                                      Margin="5" />
+                        </TabItem>
+                        <TabItem Header="DNF/KNF">
+                            <StackPanel Margin="5">
+                                <TextBlock Text="Дизъюнктивная нормальная форма (DNF):"
+                                         FontWeight="Bold" />
+                                <TextBox Text="{Binding Dnf1, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Height="60"
+                                         Margin="0, 5, 0, 10" />
+                                <TextBlock Text="Конъюнктивная нормальная форма (KNF):"
+                                         FontWeight="Bold" />
+                                <TextBox Text="{Binding Knf1, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Height="60"
+                                         Margin="0, 5, 0, 0" />
+                            </StackPanel>
+                        </TabItem>
+                        
+                        <TabItem Header="Стоимость">
+                            <StackPanel Margin="5">
+                                <TextBlock Text="{Binding Cost1, Mode=OneWay}"
+                                           FontSize="14" />
+                            </StackPanel>    
+                        </TabItem>
+                    </TabControl>
+                </Expander>
+                
+                <!-- Expander для Функции 2 -->
+                <Expander Header="Результаты для функции 2"
+                          IsExpanded="{Binding IsFunction2Expanded}"
+                          Margin="0,0,0,5">
+                    <TabControl>
+                        <TabItem Header="Таблица истинности">
+                            <DataGrid ItemsSource="{Binding TruthTable2, Mode=OneWay}"
+                                      AutoGenerateColumns="True"
+                                      IsReadOnly="True"
+                                      Margin="5" />
+                        </TabItem>
+                        <TabItem Header="DNF/KNF">
+                            <StackPanel Margin="5">
+                                <TextBlock Text="Дизъюнктивная нормальная форма (DNF):"
+                                           FontWeight="Bold" />
+                                <TextBox Text="{Binding Dnf2, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Height="60"
+                                         Margin="0,5,0,10" />
+                                <TextBlock Text="Конъюнктивная нормальная форма (KNF):"
+                                           FontWeight="Bold" />
+                                <TextBox Text="{Binding Knf2, Mode=OneWay}"
+                                         IsReadOnly="True"
+                                         TextWrapping="Wrap"
+                                         Height="60"
+                                         Margin="0,5,0,10" />
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Стоимость">
+                            <StackPanel Margin="5">
+                                <TextBlock Text="{Binding Cost2, Mode=OneWay}"
+                                           FontSize="14" />
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
+                </Expander>
+
+                <!-- Expander для проверки эквивалентности -->
+                <Expander Header="Проверка эквивалентности"
+                          IsExpanded="True">
+                    <StackPanel Margin="5">
+                        <Button Content="Проверить эквивалентность"
+                                Command="{Binding CheckEquivalenceCommand}"
+                                HorizontalAlignment="Center"
+                                Padding="15, 5"
+                                Margin="0, 10" />
+                        <Border Background="{Binding EquivalenceColor, Mode=OneWay}"
+                                CornerRadius="5"
+                                Margin="0, 10"
+                                Padding="10">
+                            <TextBlock Text="{Binding EquivalenceMessage, Mode=OneWay}"
+                                       HorizontalAlignment="Center"
+                                       FontWeight="Bold"
+                                       Foreground="White" />
+                        </Border>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StatusBar Grid.Row="2">
+            <TextBlock Text="{Binding StatusMessage, Mode=OneWay}" />
+        </StatusBar>
     </Grid>
 </Window>
