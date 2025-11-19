@@ -20,5 +20,12 @@ namespace WpfLab4
         {
             InitializeComponent();
         }
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var helpWindow = new HelpWindow();
+            helpWindow.Owner = this; // Set the main window as owner
+            helpWindow.ShowDialog(); // Show as modal dialog
+        }
+
     }
 }

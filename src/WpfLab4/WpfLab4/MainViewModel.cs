@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Documents;
 using ClassLab4.Models;
+using System.Windows;
 
 namespace WpfLab4
 {
@@ -192,7 +193,8 @@ namespace WpfLab4
                 _isEquivalent = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(EquivalenceMessage));
-                OnPropertyChanged(nameof(EquivalenceColor));
+                // Remove the line below since we're no longer using EquivalenceColor
+                // OnPropertyChanged(nameof(EquivalenceColor));
             }
         }
 
@@ -210,9 +212,9 @@ namespace WpfLab4
         }
 
         // Свойство для цвета сообщения об эквивалентности
-        public Brush EquivalenceColor => IsEquivalent ?
-            new SolidColorBrush(Colors.Green) :
-            new SolidColorBrush(Colors.Red);
+        //public Brush EquivalenceColor => IsEquivalent ?
+        //    new SolidColorBrush(Colors.Green) :
+         //   new SolidColorBrush(Colors.Red);
 
         // Состояние Expander'ов
         private bool _isFunсtion1Expanded = true;

@@ -5,37 +5,1824 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfLab4"
         mc:Ignorable="d"
-        Title="Лабораторная работа №4" Height="600" Width="800">
+        Title="Лабораторная работа №4" Height="635" Width="810" Background="#FF000C18" ResizeMode="NoResize">
+    <Window.Resources>
+
+        <Style x:Key="GlowButtonStyle" TargetType="Button">
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Outer Glow Effect -->
+                            <Border x:Name="outerGlow"
+                        Background="Transparent"
+                        BorderBrush="#FF84FFD9"
+                        BorderThickness="2"
+                        Margin="0">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" 
+                                          BlurRadius="15" 
+                                          Color="#FF84FFD9"
+                                          Opacity="0.6"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <!-- Main Border -->
+                            <Border x:Name="mainBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="True">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" 
+                                          BlurRadius="8" 
+                                          Color="#FF84FFD9"
+                                          Opacity="0.4"/>
+                                </Border.Effect>
+
+                                <ContentPresenter x:Name="contentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                    <ContentPresenter.Effect>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                              BlurRadius="10" 
+                                              Color="#FF84FFD9"
+                                              Opacity="0.8"/>
+                                    </ContentPresenter.Effect>
+                                </ContentPresenter>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!-- Enhanced glow on hover -->
+                                <Setter TargetName="outerGlow" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                              BlurRadius="20" 
+                                              Color="#FF84FFD9"
+                                              Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                              BlurRadius="12" 
+                                              Color="#FF84FFD9"
+                                              Opacity="0.6"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="contentPresenter" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                              BlurRadius="15" 
+                                              Color="#FF84FFD9"
+                                              Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="outerGlow" Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingExpanderStyle" TargetType="Expander">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border x:Name="mainBorder"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="4">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" 
+                                BlurRadius="10" 
+                                Color="#FF84FFD9"
+                                Opacity="0.5"/>
+                            </Border.Effect>
+
+                            <DockPanel>
+                                <!-- Header with glow -->
+                                <ToggleButton x:Name="HeaderSite"
+                          DockPanel.Dock="Top"
+                          Content="{TemplateBinding Header}"
+                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                          FontFamily="{TemplateBinding FontFamily}"
+                          FontSize="{TemplateBinding FontSize}"
+                          FontWeight="{TemplateBinding FontWeight}"
+                          Foreground="{TemplateBinding Foreground}"
+                          Background="Transparent"
+                          BorderBrush="Transparent"
+                          IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                          Padding="10,8">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="headerBorder"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="0"
+                                  Padding="{TemplateBinding Padding}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Expand/Collapse Arrow with glow -->
+                                                    <Border x:Name="arrowBorder"
+                                          Grid.Column="0"
+                                          Width="16"
+                                          Height="16"
+                                          Margin="0,0,8,0"
+                                          Background="Transparent">
+                                                        <Path x:Name="arrowPath"
+                                            Fill="#FF84FFD9"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Data="M 0,0 L 8,8 L 16,0 Z">
+                                                            <Path.Effect>
+                                                                <DropShadowEffect ShadowDepth="0"
+                                                                BlurRadius="8"
+                                                                Color="#FF84FFD9"
+                                                                Opacity="0.8"/>
+                                                            </Path.Effect>
+                                                        </Path>
+                                                    </Border>
+
+                                                    <!-- Header Content with glow -->
+                                                    <ContentPresenter x:Name="headerContent"
+                                                    Grid.Column="1"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                        <ContentPresenter.Effect>
+                                                            <DropShadowEffect ShadowDepth="0"
+                                                            BlurRadius="8"
+                                                            Color="#FF84FFD9"
+                                                            Opacity="0.8"/>
+                                                        </ContentPresenter.Effect>
+                                                    </ContentPresenter>
+                                                </Grid>
+                                            </Border>
+
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="headerBorder" Property="Background" Value="#1A84FFD9"/>
+                                                    <Setter TargetName="headerContent" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="1"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter TargetName="arrowPath" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="1"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="arrowPath" Property="Data" Value="M 0,8 L 8,0 L 16,8 Z"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <!-- Expandable Content -->
+                                <ContentPresenter x:Name="ContentSite"
+                              DockPanel.Dock="Bottom"
+                              Visibility="Collapsed"
+                              Margin="10,5,10,10"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </DockPanel>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="mainBorder" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="mainBorder" Property="Background" Value="#FF001830"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingExpanderStyleA" TargetType="Expander">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FFffe885"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FFffe885"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border x:Name="mainBorder"
+          Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="4">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" 
+                        BlurRadius="10" 
+                        Color="#FFffe885"
+                        Opacity="0.5"/>
+                            </Border.Effect>
+
+                            <DockPanel>
+                                <!-- Header with glow -->
+                                <ToggleButton x:Name="HeaderSite"
+                      DockPanel.Dock="Top"
+                      Content="{TemplateBinding Header}"
+                      ContentTemplate="{TemplateBinding HeaderTemplate}"
+                      FontFamily="{TemplateBinding FontFamily}"
+                      FontSize="{TemplateBinding FontSize}"
+                      FontWeight="{TemplateBinding FontWeight}"
+                      Foreground="{TemplateBinding Foreground}"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                      Padding="10,8">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="headerBorder"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="0"
+                              Padding="{TemplateBinding Padding}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Expand/Collapse Arrow with glow -->
+                                                    <Border x:Name="arrowBorder"
+                                      Grid.Column="0"
+                                      Width="16"
+                                      Height="16"
+                                      Margin="0,0,8,0"
+                                      Background="Transparent">
+                                                        <Path x:Name="arrowPath"
+                                        Fill="#FFffe885"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Data="M 0,0 L 8,8 L 16,0 Z">
+                                                            <Path.Effect>
+                                                                <DropShadowEffect ShadowDepth="0"
+                                                        BlurRadius="8"
+                                                        Color="#FFffe885"
+                                                        Opacity="0.8"/>
+                                                            </Path.Effect>
+                                                        </Path>
+                                                    </Border>
+
+                                                    <!-- Header Content with glow -->
+                                                    <ContentPresenter x:Name="headerContent"
+                                            Grid.Column="1"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                        <ContentPresenter.Effect>
+                                                            <DropShadowEffect ShadowDepth="0"
+                                                    BlurRadius="8"
+                                                    Color="#FFffe885"
+                                                    Opacity="0.8"/>
+                                                        </ContentPresenter.Effect>
+                                                    </ContentPresenter>
+                                                </Grid>
+                                            </Border>
+
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="headerBorder" Property="Background" Value="#1A84FFD9"/>
+                                                    <Setter TargetName="headerContent" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FFffe885" Opacity="1"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter TargetName="arrowPath" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FFffe885" Opacity="1"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="arrowPath" Property="Data" Value="M 0,8 L 8,0 L 16,8 Z"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <!-- Expandable Content -->
+                                <ContentPresenter x:Name="ContentSite"
+                          DockPanel.Dock="Bottom"
+                          Visibility="Collapsed"
+                          Margin="10,5,10,10"
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </DockPanel>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="mainBorder" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="mainBorder" Property="Background" Value="#FF001830"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingExpanderStyleB" TargetType="Expander">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FFff85f9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FFff85f9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border x:Name="mainBorder"
+          Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}"
+          CornerRadius="4">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" 
+                        BlurRadius="10" 
+                        Color="#FFff85f9"
+                        Opacity="0.5"/>
+                            </Border.Effect>
+
+                            <DockPanel>
+                                <!-- Header with glow -->
+                                <ToggleButton x:Name="HeaderSite"
+                      DockPanel.Dock="Top"
+                      Content="{TemplateBinding Header}"
+                      ContentTemplate="{TemplateBinding HeaderTemplate}"
+                      FontFamily="{TemplateBinding FontFamily}"
+                      FontSize="{TemplateBinding FontSize}"
+                      FontWeight="{TemplateBinding FontWeight}"
+                      Foreground="{TemplateBinding Foreground}"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                      Padding="10,8">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border x:Name="headerBorder"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="0"
+                              Padding="{TemplateBinding Padding}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Expand/Collapse Arrow with glow -->
+                                                    <Border x:Name="arrowBorder"
+                                      Grid.Column="0"
+                                      Width="16"
+                                      Height="16"
+                                      Margin="0,0,8,0"
+                                      Background="Transparent">
+                                                        <Path x:Name="arrowPath"
+                                        Fill="#FFff85f9"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Data="M 0,0 L 8,8 L 16,0 Z">
+                                                            <Path.Effect>
+                                                                <DropShadowEffect ShadowDepth="0"
+                                                        BlurRadius="8"
+                                                        Color="#FFff85f9"
+                                                        Opacity="0.8"/>
+                                                            </Path.Effect>
+                                                        </Path>
+                                                    </Border>
+
+                                                    <!-- Header Content with glow -->
+                                                    <ContentPresenter x:Name="headerContent"
+                                            Grid.Column="1"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                        <ContentPresenter.Effect>
+                                                            <DropShadowEffect ShadowDepth="0"
+                                                    BlurRadius="8"
+                                                    Color="#FFff85f9"
+                                                    Opacity="0.8"/>
+                                                        </ContentPresenter.Effect>
+                                                    </ContentPresenter>
+                                                </Grid>
+                                            </Border>
+
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="headerBorder" Property="Background" Value="#1A84FFD9"/>
+                                                    <Setter TargetName="headerContent" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FFff85f9" Opacity="1"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter TargetName="arrowPath" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FFff85f9" Opacity="1"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="arrowPath" Property="Data" Value="M 0,8 L 8,0 L 16,8 Z"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <!-- Expandable Content -->
+                                <ContentPresenter x:Name="ContentSite"
+                          DockPanel.Dock="Bottom"
+                          Visibility="Collapsed"
+                          Margin="10,5,10,10"
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </DockPanel>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="mainBorder" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="mainBorder" Property="Background" Value="#FF001830"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingTabControlStyle" TargetType="TabControl">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="ColumnDefinition0"/>
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
+                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Tab Panel -->
+                            <TabPanel x:Name="headerPanel"
+                          Grid.Row="0"
+                          Panel.ZIndex="1"
+                          Margin="0,0,0,0"
+                          IsItemsHost="true"
+                          KeyboardNavigation.TabIndex="1"
+                          Background="Transparent"/>
+
+                            <!-- Main Border with Glow -->
+                            <Border x:Name="mainBorder"
+                        Grid.Row="1"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="0,0,4,4"
+                        Margin="0,-1,0,0">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="0.5"/>
+                                </Border.Effect>
+
+                                <ContentPresenter x:Name="PART_SelectedContentHost"
+                                      ContentSource="SelectedContent"
+                                      Margin="10"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingTabItemStyle" TargetType="TabItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid x:Name="root">
+                            <Border x:Name="mainBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4,4,0,0"
+                        Margin="1,0,1,0">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="0.5"/>
+                                </Border.Effect>
+
+                                <ContentPresenter x:Name="contentPresenter"
+                                      ContentSource="Header"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      Margin="{TemplateBinding Padding}">
+                                    <ContentPresenter.Effect>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </ContentPresenter.Effect>
+                                </ContentPresenter>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <!-- Selected State -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="mainBorder" Property="Background" Value="#FF001830"/>
+                                <Setter TargetName="mainBorder" Property="BorderThickness" Value="2"/>
+                                <Setter TargetName="mainBorder" Property="Margin" Value="0,0,0,0"/>
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="contentPresenter" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- MouseOver State -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="mainBorder" Property="Background" Value="#1A84FFD9"/>
+                                <Setter TargetName="contentPresenter" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Disabled State -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="contentPresenter" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="SelectionMode" Value="Extended"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="CanUserResizeColumns" Value="True"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#1A84FFD9"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#1A84FFD9"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGrid">
+                        <Border x:Name="mainBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="4"
+                    Padding="1">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="0.5"/>
+                            </Border.Effect>
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="ScrollViewer">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Column headers -->
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                                                Grid.Column="1"
+                                                                Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+
+                                            <!-- Data rows -->
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        CanContentScroll="{TemplateBinding CanContentScroll}"/>
+
+                                            <!-- Vertical scrollbar -->
+                                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                           Grid.Row="1"
+                                           Grid.Column="2"
+                                           Orientation="Vertical"
+                                           ViewportSize="{TemplateBinding ViewportHeight}"
+                                           Maximum="{TemplateBinding ScrollableHeight}"
+                                           Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+
+                                            <!-- Horizontal scrollbar -->
+                                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                           Grid.Row="2"
+                                           Grid.Column="1"
+                                           Orientation="Horizontal"
+                                           ViewportSize="{TemplateBinding ViewportWidth}"
+                                           Maximum="{TemplateBinding ScrollableWidth}"
+                                           Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Resources>
+                <!-- DataGridRow Style -->
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#FF84FFD9"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FontFamily" Value="Courier New"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#1A84FFD9"/>
+                            <Setter Property="Foreground" Value="#FF84FFD9"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FF001830"/>
+                            <Setter Property="Foreground" Value="#FF84FFD9"/>
+                            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="#7F84FFD9"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+                <!-- DataGridCell Style -->
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#FF84FFD9"/>
+                    <Setter Property="BorderBrush" Value="#1A84FFD9"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                    <Setter Property="Padding" Value="8,4"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <Border x:Name="cellBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                                    <ContentPresenter x:Name="cellContent"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <ContentPresenter.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="#FF84FFD9" Opacity="0.6"/>
+                                        </ContentPresenter.Effect>
+                                    </ContentPresenter>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="cellContent" Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="cellContent" Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FF84FFD9" Opacity="0.8"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- DataGridColumnHeader Style -->
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#FF001830"/>
+                    <Setter Property="Foreground" Value="#FF84FFD9"/>
+                    <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,2"/>
+                    <Setter Property="FontFamily" Value="Courier New"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="8,6"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridColumnHeader">
+                                <Border x:Name="headerBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter x:Name="headerContent"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <ContentPresenter.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="0.8"/>
+                                        </ContentPresenter.Effect>
+                                    </ContentPresenter>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="headerBorder" Property="Background" Value="#1A84FFD9"/>
+                                        <Setter TargetName="headerContent" Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="headerBorder" Property="Background" Value="#3A84FFD9"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- ScrollBar Styles -->
+                <Style TargetType="ScrollBar">
+                    <Setter Property="Background" Value="#FF000C18"/>
+                    <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                    <Setter Property="Foreground" Value="#FF84FFD9"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Style.Resources>
+                        <Style TargetType="Thumb">
+                            <Setter Property="Background" Value="#FF84FFD9"/>
+                            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border x:Name="thumbBorder" 
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="1"
+                                    CornerRadius="2">
+                                            <Border.Effect>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="#FF84FFD9" Opacity="0.6"/>
+                                            </Border.Effect>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="thumbBorder" Property="Background" Value="#FF84FFD9"/>
+                                                <Setter TargetName="thumbBorder" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="1"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsDragging" Value="True">
+                                                <Setter TargetName="thumbBorder" Property="Background" Value="#FF84FFD9"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style TargetType="RepeatButton">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                            <Setter Property="Foreground" Value="#FF84FFD9"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RepeatButton">
+                                        <Border x:Name="repeatBorder" 
+                                    Background="{TemplateBinding Background}" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="1">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <ContentPresenter.Effect>
+                                                    <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="#FF84FFD9" Opacity="0.6"/>
+                                                </ContentPresenter.Effect>
+                                            </ContentPresenter>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="repeatBorder" Property="Background" Value="#1A84FFD9"/>
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="repeatBorder" Property="Background" Value="#3A84FFD9"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Style.Resources>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style x:Key="GlowingTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CaretBrush" Value="#FF84FFD9"/>
+            <Setter Property="SelectionBrush" Value="#3A84FFD9"/>
+            <Setter Property="SelectionTextBrush" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="SpellCheck.IsEnabled" Value="true"/>
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" 
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="4"
+                    SnapsToDevicePixels="True">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="0.5"/>
+                            </Border.Effect>
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                              Focusable="false" 
+                              HorizontalScrollBarVisibility="Hidden" 
+                              VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="12" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                                <Setter TargetName="border" Property="Background" Value="#FF001830"/>
+                                <Setter TargetName="border" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FF84FFD9" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="0.8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingTextBlockStyleWrong" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FFff858e"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FFff858e" Opacity="0.8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingTextBlockStyleCorrect" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FF859cff"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF859cff" Opacity="0.8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingGroupBoxStyle" TargetType="GroupBox">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid SnapsToDevicePixels="true">
+                            <Border x:Name="mainBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="0.5"/>
+                                </Border.Effect>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Header Border with Glow -->
+                                    <Border x:Name="headerBorder"
+                                Grid.Row="0"
+                                Background="#FF001830"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0,0,0,1"
+                                Padding="10,5"
+                                CornerRadius="4,4,0,0"
+                                Margin="1,1,1,0">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF84FFD9" Opacity="0.6"/>
+                                        </Border.Effect>
+
+                                        <ContentPresenter x:Name="headerContent"
+                                              ContentSource="Header"
+                                              RecognizesAccessKey="True"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center">
+                                            <ContentPresenter.Effect>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FF84FFD9" Opacity="0.8"/>
+                                            </ContentPresenter.Effect>
+                                        </ContentPresenter>
+                                    </Border>
+
+                                    <!-- Content Area -->
+                                    <ContentPresenter x:Name="contentPresenter"
+                                          Grid.Row="1"
+                                          Margin="{TemplateBinding Padding}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <!-- MouseOver State -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FF84FFD9" Opacity="0.7"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="headerBorder" Property="Background" Value="#FF002040"/>
+                                <Setter TargetName="headerContent" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Focus State (if applicable) -->
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="18" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Disabled State -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="headerBorder" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingGroupBoxStyleA" TargetType="GroupBox">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FFffe885"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FFffe885"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid SnapsToDevicePixels="true">
+                            <Border x:Name="mainBorder"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FFffe885" Opacity="0.5"/>
+                                </Border.Effect>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Header Border with Glow -->
+                                    <Border x:Name="headerBorder"
+                        Grid.Row="0"
+                        Background="#FF001830"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="0,0,0,1"
+                        Padding="10,5"
+                        CornerRadius="4,4,0,0"
+                        Margin="1,1,1,0">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FFffe885" Opacity="0.6"/>
+                                        </Border.Effect>
+
+                                        <ContentPresenter x:Name="headerContent"
+                                  ContentSource="Header"
+                                  RecognizesAccessKey="True"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center">
+                                            <ContentPresenter.Effect>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FFffe885" Opacity="0.8"/>
+                                            </ContentPresenter.Effect>
+                                        </ContentPresenter>
+                                    </Border>
+
+                                    <!-- Content Area -->
+                                    <ContentPresenter x:Name="contentPresenter"
+                                      Grid.Row="1"
+                                      Margin="{TemplateBinding Padding}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <!-- MouseOver State -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FFffe885" Opacity="0.7"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="headerBorder" Property="Background" Value="#FF002040"/>
+                                <Setter TargetName="headerContent" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FFffe885" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Focus State (if applicable) -->
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="18" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Disabled State -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="headerBorder" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingGroupBoxStyleB" TargetType="GroupBox">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FFff85f9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Foreground" Value="#FFff85f9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid SnapsToDevicePixels="true">
+                            <Border x:Name="mainBorder"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FFff85f9" Opacity="0.5"/>
+                                </Border.Effect>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Header Border with Glow -->
+                                    <Border x:Name="headerBorder"
+                Grid.Row="0"
+                Background="#FF001830"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="10,5"
+                CornerRadius="4,4,0,0"
+                Margin="1,1,1,0">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FFff85f9" Opacity="0.6"/>
+                                        </Border.Effect>
+
+                                        <ContentPresenter x:Name="headerContent"
+                              ContentSource="Header"
+                              RecognizesAccessKey="True"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center">
+                                            <ContentPresenter.Effect>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FFff85f9" Opacity="0.8"/>
+                                            </ContentPresenter.Effect>
+                                        </ContentPresenter>
+                                    </Border>
+
+                                    <!-- Content Area -->
+                                    <ContentPresenter x:Name="contentPresenter"
+                          Grid.Row="1"
+                          Margin="{TemplateBinding Padding}"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <!-- MouseOver State -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FFff85f9" Opacity="0.7"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="headerBorder" Property="Background" Value="#FF002040"/>
+                                <Setter TargetName="headerContent" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FFff85f9" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Focus State (if applicable) -->
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="18" Color="#FFff85f9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <!-- Disabled State -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="headerBorder" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingBorderStyleWrong" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#FFff858e"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FFff858e" Opacity="0.8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingBorderStyleCorrect" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#FF859cff"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF859cff" Opacity="0.8"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Main content border with glow -->
+                            <Border x:Name="mainBorder"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="0.5"/>
+                                </Border.Effect>
+
+                                <!-- Scroll content -->
+                                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                            CanContentScroll="{TemplateBinding CanContentScroll}"
+                                            CanHorizontallyScroll="False"
+                                            CanVerticallyScroll="False"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            Content="{TemplateBinding Content}"
+                                            Margin="{TemplateBinding Padding}"/>
+                            </Border>
+
+                            <!-- Vertical ScrollBar - Thinner and rounded -->
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                           Grid.Column="1"
+                           Grid.Row="0"
+                           Orientation="Vertical"
+                           Value="{TemplateBinding VerticalOffset}"
+                           Maximum="{TemplateBinding ScrollableHeight}"
+                           ViewportSize="{TemplateBinding ViewportHeight}"
+                           Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
+                                <ScrollBar.Style>
+                                    <Style TargetType="ScrollBar">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                                        <Setter Property="Foreground" Value="#FF84FFD9"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Width" Value="10"/>
+                                        <Setter Property="MinWidth" Value="10"/>
+                                        <Setter Property="Margin" Value="2,0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ScrollBar">
+                                                    <Grid x:Name="Bg" 
+                                              Background="Transparent"
+                                              SnapsToDevicePixels="true">
+                                                        <Track x:Name="PART_Track" 
+                                                   IsDirectionReversed="true">
+                                                            <Track.Thumb>
+                                                                <Thumb x:Name="Thumb"
+                                                           Background="#FF84FFD9"
+                                                           BorderBrush="#FF84FFD9">
+                                                                    <Thumb.Template>
+                                                                        <ControlTemplate TargetType="Thumb">
+                                                                            <Border x:Name="thumbBorder" 
+                                                                        Background="{TemplateBinding Background}" 
+                                                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                        BorderThickness="0"
+                                                                        CornerRadius="5"
+                                                                        Margin="1,2">
+                                                                                <Border.Effect>
+                                                                                    <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FF84FFD9" Opacity="0.8"/>
+                                                                                </Border.Effect>
+                                                                            </Border>
+                                                                            <ControlTemplate.Triggers>
+                                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                                    <Setter TargetName="thumbBorder" Property="Background" Value="#FF84FFD9"/>
+                                                                                    <Setter TargetName="thumbBorder" Property="Margin" Value="1,1"/>
+                                                                                    <Setter TargetName="thumbBorder" Property="Effect">
+                                                                                        <Setter.Value>
+                                                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="1"/>
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Trigger>
+                                                                                <Trigger Property="IsDragging" Value="True">
+                                                                                    <Setter TargetName="thumbBorder" Property="Background" Value="#FF84FFD9"/>
+                                                                                    <Setter TargetName="thumbBorder" Property="Margin" Value="0,1"/>
+                                                                                </Trigger>
+                                                                            </ControlTemplate.Triggers>
+                                                                        </ControlTemplate>
+                                                                    </Thumb.Template>
+                                                                </Thumb>
+                                                            </Track.Thumb>
+                                                            <Track.DecreaseRepeatButton>
+                                                                <RepeatButton Command="ScrollBar.PageUpCommand" 
+                                                                 Background="Transparent"
+                                                                 BorderThickness="0"
+                                                                 Focusable="False"/>
+                                                            </Track.DecreaseRepeatButton>
+                                                            <Track.IncreaseRepeatButton>
+                                                                <RepeatButton Command="ScrollBar.PageDownCommand" 
+                                                                 Background="Transparent"
+                                                                 BorderThickness="0"
+                                                                 Focusable="False"/>
+                                                            </Track.IncreaseRepeatButton>
+                                                        </Track>
+                                                    </Grid>
+
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Thumb" Property="Background" Value="#FF84FFD9"/>
+                                                        </Trigger>
+
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter TargetName="Thumb" Property="Background" Value="#7F84FFD9"/>
+                                                            <Setter TargetName="Thumb" Property="Opacity" Value="0.5"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ScrollBar.Style>
+                            </ScrollBar>
+
+                            <!-- Horizontal ScrollBar - Thinner and rounded -->
+                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                           Grid.Column="0"
+                           Grid.Row="1"
+                           Orientation="Horizontal"
+                           Value="{TemplateBinding HorizontalOffset}"
+                           Maximum="{TemplateBinding ScrollableWidth}"
+                           ViewportSize="{TemplateBinding ViewportWidth}"
+                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}">
+                                <ScrollBar.Style>
+                                    <Style TargetType="ScrollBar">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+                                        <Setter Property="Foreground" Value="#FF84FFD9"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Height" Value="10"/>
+                                        <Setter Property="MinHeight" Value="10"/>
+                                        <Setter Property="Margin" Value="0,2"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ScrollBar">
+                                                    <Grid x:Name="Bg" 
+                                              Background="Transparent"
+                                              SnapsToDevicePixels="true">
+                                                        <Track x:Name="PART_Track" 
+                                                   IsDirectionReversed="false">
+                                                            <Track.Thumb>
+                                                                <Thumb x:Name="Thumb"
+                                                           Background="#FF84FFD9"
+                                                           BorderBrush="#FF84FFD9">
+                                                                    <Thumb.Template>
+                                                                        <ControlTemplate TargetType="Thumb">
+                                                                            <Border x:Name="thumbBorder" 
+                                                                        Background="{TemplateBinding Background}" 
+                                                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                        BorderThickness="0"
+                                                                        CornerRadius="5"
+                                                                        Margin="2,1">
+                                                                                <Border.Effect>
+                                                                                    <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FF84FFD9" Opacity="0.8"/>
+                                                                                </Border.Effect>
+                                                                            </Border>
+                                                                            <ControlTemplate.Triggers>
+                                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                                    <Setter TargetName="thumbBorder" Property="Background" Value="#FF84FFD9"/>
+                                                                                    <Setter TargetName="thumbBorder" Property="Margin" Value="1,1"/>
+                                                                                    <Setter TargetName="thumbBorder" Property="Effect">
+                                                                                        <Setter.Value>
+                                                                                            <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="1"/>
+                                                                                        </Setter.Value>
+                                                                                    </Setter>
+                                                                                </Trigger>
+                                                                                <Trigger Property="IsDragging" Value="True">
+                                                                                    <Setter TargetName="thumbBorder" Property="Background" Value="#FF84FFD9"/>
+                                                                                    <Setter TargetName="thumbBorder" Property="Margin" Value="1,0"/>
+                                                                                </Trigger>
+                                                                            </ControlTemplate.Triggers>
+                                                                        </ControlTemplate>
+                                                                    </Thumb.Template>
+                                                                </Thumb>
+                                                            </Track.Thumb>
+                                                            <Track.DecreaseRepeatButton>
+                                                                <RepeatButton Command="ScrollBar.PageLeftCommand" 
+                                                                 Background="Transparent"
+                                                                 BorderThickness="0"
+                                                                 Focusable="False"/>
+                                                            </Track.DecreaseRepeatButton>
+                                                            <Track.IncreaseRepeatButton>
+                                                                <RepeatButton Command="ScrollBar.PageRightCommand" 
+                                                                 Background="Transparent"
+                                                                 BorderThickness="0"
+                                                                 Focusable="False"/>
+                                                            </Track.IncreaseRepeatButton>
+                                                        </Track>
+                                                    </Grid>
+
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Thumb" Property="Background" Value="#FF84FFD9"/>
+                                                        </Trigger>
+
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter TargetName="Thumb" Property="Background" Value="#7F84FFD9"/>
+                                                            <Setter TargetName="Thumb" Property="Opacity" Value="0.5"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ScrollBar.Style>
+                            </ScrollBar>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingStatusBarStyle" TargetType="StatusBar">
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="2,2,2,2"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="10,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="StatusBar">
+                        <Border x:Name="mainBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4,4,0,0"
+                        SnapsToDevicePixels="True">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="0.5"/>
+                            </Border.Effect>
+
+                            <Grid>
+                                <ItemsPresenter x:Name="ItemsPresenter"
+                                        Margin="{TemplateBinding Padding}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FF84FFD9" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GlowingStatusBarItemStyle" TargetType="StatusBarItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="StatusBarItem">
+                        <Border x:Name="itemBorder"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="3"
+                        Padding="{TemplateBinding Padding}"
+                        SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <ContentPresenter.Effect>
+                                    <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="#FF84FFD9" Opacity="0.8"/>
+                                </ContentPresenter.Effect>
+                            </ContentPresenter>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="itemBorder" Property="Background" Value="#1A84FFD9"/>
+                                <Setter TargetName="contentPresenter" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF84FFD9" Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundHelpButtonStyle" TargetType="Button">
+            <Setter Property="BorderBrush" Value="#FF84FFD9"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#FF84FFD9"/>
+            <Setter Property="Background" Value="#FF000C18"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Outer Glow Effect -->
+                            <Border x:Name="outerGlow"
+                            Background="Transparent"
+                            BorderBrush="#FF84FFD9"
+                            BorderThickness="2"
+                            CornerRadius="20">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" 
+                                      BlurRadius="15" 
+                                      Color="#FF84FFD9"
+                                      Opacity="0.6"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <!-- Main Border -->
+                            <Border x:Name="mainBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="20"
+                            SnapsToDevicePixels="True">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0" 
+                                      BlurRadius="8" 
+                                      Color="#FF84FFD9"
+                                      Opacity="0.4"/>
+                                </Border.Effect>
+
+                                <ContentPresenter x:Name="contentPresenter"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Margin="{TemplateBinding Padding}"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                    <ContentPresenter.Effect>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                          BlurRadius="10" 
+                                          Color="#FF84FFD9"
+                                          Opacity="0.8"/>
+                                    </ContentPresenter.Effect>
+                                </ContentPresenter>
+                            </Border>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!-- Enhanced glow on hover -->
+                                <Setter TargetName="outerGlow" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                          BlurRadius="20" 
+                                          Color="#FF84FFD9"
+                                          Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="mainBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                          BlurRadius="12" 
+                                          Color="#FF84FFD9"
+                                          Opacity="0.6"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="contentPresenter" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect ShadowDepth="0" 
+                                          BlurRadius="15" 
+                                          Color="#FF84FFD9"
+                                          Opacity="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="mainBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="outerGlow" Property="Opacity" Value="0.3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Margin="10">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
+        <Button x:Name="HelpButton" 
+Content="?" 
+Style="{StaticResource RoundHelpButtonStyle}"
+Click="HelpButton_Click"
+HorizontalAlignment="Right" 
+VerticalAlignment="Top"
+Margin="5"
+Width="40" 
+Height="40"
+Panel.ZIndex="1000"/>
         <!-- Заголовок -->
-        <TextBlock Grid.Row="0" Text="Логические функции" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
-        
+        <TextBlock Text="Логические функции" Grid.Row="0"  FontSize="24" FontWeight="Bold" Margin="0,0,0,10"  TextAlignment="Center" Style="{StaticResource GlowingTextBlockStyle}"/>
+
         <!-- Основная область -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Style="{StaticResource GlowingScrollViewerStyle}" Margin="2">
             <StackPanel>
-                
+
                 <!-- Expander для ввода функций -->
                 <Expander IsExpanded="True"
                           Margin="0,0,0,5"
-                          Header="Ввод функций">
-                    <Grid Background="#FFE5E5E5" >
+                          Header="Ввод функций" Style="{StaticResource GlowingExpanderStyle}">
+                    <Grid Background="#FF001830" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="10"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <!-- Функция 1-->
-                        <GroupBox Grid.Column="0"
-                                  Header="Функция 1">
+                        <GroupBox Grid.Column="0" Style="{StaticResource GlowingGroupBoxStyleA}"
+                                  Header="Функция 1" >
                             <StackPanel>
                                 <TextBox x:Name="Function1Input"
+                                         Style="{StaticResource GlowingTextBoxStyle}"
                                          Text="{Binding Function1Input}"
                                          Margin ="5"
                                          Height= "25"
@@ -44,31 +1831,36 @@
                                             HorizontalAlignment="Center">
                                     <Button Content="Из номера"
                                             Command="{Binding BuildFunction1FromNumberCommand}"
+                                            Style="{StaticResource GlowButtonStyle}"
                                             Margin="5"
                                             Padding="10, 3"/>
                                     <Button Content="Из формулы"
+                                            Style="{StaticResource GlowButtonStyle}"
                                             Command="{Binding BuildFunction1FromFormulaCommand}"
                                             Margin="5"
                                             Padding="10, 3"/>
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>
-                        
+
                         <!-- Функция 2 -->
-                        <GroupBox Grid.Column="2"
+                        <GroupBox Grid.Column="2" Style="{StaticResource GlowingGroupBoxStyleB}"
                                   Header="Функция 2">
                             <StackPanel>
                                 <TextBox x:Name="Function2Input"
+                                         Style="{StaticResource GlowingTextBoxStyle}"
                                          Text="{Binding Function2Input}"
                                          Margin="5"
                                          Height="25" />
                                 <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Center">
                                     <Button Content="Из номера"
+                                            Style="{StaticResource GlowButtonStyle}"
                                             Command="{Binding BuildFunction2FromNumberCommand}"
                                             Margin="5"
                                             Padding="10, 3" />
                                     <Button Content="Из формулы"
+                                            Style="{StaticResource GlowButtonStyle}"
                                             Command="{Binding BuildFunction2FromFormulaCommand}"
                                             Margin="5"
                                             Padding="10, 3" />
@@ -79,11 +1871,13 @@
                 </Expander>
 
                 <Expander Header="Результаты для Функции 1"
-                          IsExpanded="{Binding IsFunction1Expanded}"
-                          Margin="0,0,0,5">
-                    <TabControl>
+                          Margin="0,0,0,5" Style="{StaticResource GlowingExpanderStyleA}">
+                    <TabControl Style="{StaticResource GlowingTabControlStyle}">
+                        <TabControl.Resources>
+                            <Style TargetType="TabItem" BasedOn="{StaticResource GlowingTabItemStyle}"/>
+                        </TabControl.Resources>
                         <TabItem Header="Таблица истинности">
-                            <DataGrid ItemsSource="{Binding TruthTable1, Mode=OneWay}"
+                            <DataGrid Style="{StaticResource GlowingDataGridStyle}" ItemsSource="{Binding TruthTable1, Mode=OneWay}"
                                       AutoGenerateColumns="True"
                                       IsReadOnly="True"
                                       Margin="5" />
@@ -93,6 +1887,7 @@
                                 <TextBlock Text="Дизъюнктивная нормальная форма (DNF):"
                                          FontWeight="Bold" />
                                 <TextBox Text="{Binding Dnf1, Mode=OneWay}"
+                                         Style="{StaticResource GlowingTextBoxStyle}"
                                          IsReadOnly="True"
                                          TextWrapping="Wrap"
                                          Height="60"
@@ -100,29 +1895,33 @@
                                 <TextBlock Text="Конъюнктивная нормальная форма (KNF):"
                                          FontWeight="Bold" />
                                 <TextBox Text="{Binding Knf1, Mode=OneWay}"
+                                         Style="{StaticResource GlowingTextBoxStyle}"
                                          IsReadOnly="True"
                                          TextWrapping="Wrap"
                                          Height="60"
                                          Margin="0, 5, 0, 0" />
                             </StackPanel>
                         </TabItem>
-                        
+
                         <TabItem Header="Стоимость">
                             <StackPanel Margin="5">
                                 <TextBlock Text="{Binding Cost1, Mode=OneWay}"
                                            FontSize="14" />
-                            </StackPanel>    
+                            </StackPanel>
                         </TabItem>
                     </TabControl>
                 </Expander>
-                
+
                 <!-- Expander для Функции 2 -->
                 <Expander Header="Результаты для функции 2"
-                          IsExpanded="{Binding IsFunction2Expanded}"
-                          Margin="0,0,0,5">
-                    <TabControl>
+                          Margin="0,0,0,5" Style="{StaticResource GlowingExpanderStyleB}">
+
+                    <TabControl Style="{StaticResource GlowingTabControlStyle}">
+                        <TabControl.Resources>
+                            <Style TargetType="TabItem" BasedOn="{StaticResource GlowingTabItemStyle}"/>
+                        </TabControl.Resources>
                         <TabItem Header="Таблица истинности">
-                            <DataGrid ItemsSource="{Binding TruthTable2, Mode=OneWay}"
+                            <DataGrid Style="{StaticResource GlowingDataGridStyle}" ItemsSource="{Binding TruthTable2, Mode=OneWay}"
                                       AutoGenerateColumns="True"
                                       IsReadOnly="True"
                                       Margin="5" />
@@ -132,6 +1931,7 @@
                                 <TextBlock Text="Дизъюнктивная нормальная форма (DNF):"
                                            FontWeight="Bold" />
                                 <TextBox Text="{Binding Dnf2, Mode=OneWay}"
+                                         Style="{StaticResource GlowingTextBoxStyle}"
                                          IsReadOnly="True"
                                          TextWrapping="Wrap"
                                          Height="60"
@@ -139,6 +1939,7 @@
                                 <TextBlock Text="Конъюнктивная нормальная форма (KNF):"
                                            FontWeight="Bold" />
                                 <TextBox Text="{Binding Knf2, Mode=OneWay}"
+                                         Style="{StaticResource GlowingTextBoxStyle}"
                                          IsReadOnly="True"
                                          TextWrapping="Wrap"
                                          Height="60"
@@ -155,30 +1956,83 @@
                 </Expander>
 
                 <!-- Expander для проверки эквивалентности -->
-                <Expander Header="Проверка эквивалентности"
-                          IsExpanded="True">
+                <Expander   Header="Проверка эквивалентности"
+                          IsExpanded="True" Style="{StaticResource GlowingExpanderStyle}">
                     <StackPanel Margin="5">
                         <Button Content="Проверить эквивалентность"
                                 Command="{Binding CheckEquivalenceCommand}"
                                 HorizontalAlignment="Center"
                                 Padding="15, 5"
-                                Margin="0, 10" />
-                        <Border Background="{Binding EquivalenceColor, Mode=OneWay}"
-                                CornerRadius="5"
-                                Margin="0, 10"
-                                Padding="10">
-                            <TextBlock Text="{Binding EquivalenceMessage, Mode=OneWay}"
-                                       HorizontalAlignment="Center"
-                                       FontWeight="Bold"
-                                       Foreground="White" />
+                                Margin="0, 10" Style="{StaticResource GlowButtonStyle}"/>
+                        <Border CornerRadius="5"
+        Margin="0, 10"
+        Padding="10">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEquivalent}" Value="True">
+                                            <Setter Property="Background" Value="#1A84FFD9"/>
+                                            <Setter Property="BorderBrush" Value="#FF93ff85"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FF93ff85" Opacity="0.6"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsEquivalent}" Value="False">
+                                            <Setter Property="Background" Value="#1Aff858e"/>
+                                            <Setter Property="BorderBrush" Value="#FFff858e"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect ShadowDepth="0" BlurRadius="10" Color="#FFff858e" Opacity="0.6"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <TextBlock Text="{Binding EquivalenceMessage, Mode=OneWay}" 
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GlowingTextBlockStyle}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEquivalent}" Value="True">
+                                                <Setter Property="Foreground" Value="#FF93ff85"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FF93ff85" Opacity="0.8"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEquivalent}" Value="False">
+                                                <Setter Property="Foreground" Value="#FFff858e"/>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#FFff858e" Opacity="0.8"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Border>
                     </StackPanel>
                 </Expander>
             </StackPanel>
         </ScrollViewer>
 
-        <StatusBar Grid.Row="2">
-            <TextBlock Text="{Binding StatusMessage, Mode=OneWay}" />
+        <StatusBar Grid.Row="2" 
+           Style="{StaticResource GlowingStatusBarStyle}">
+            <StatusBarItem Style="{StaticResource GlowingStatusBarItemStyle}">
+                <TextBlock Text="{Binding StatusMessage, Mode=OneWay}" 
+                   Style="{StaticResource GlowingTextBlockStyle}"
+                   FontSize="12"/>
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>
