@@ -120,6 +120,30 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="GlowingTextBlockStyle2"
+               TargetType="TextBlock">
+            <Setter Property="Foreground"
+                    Value="#FF859cff" />
+            <Setter Property="FontFamily"
+                    Value="Courier New" />
+            <Setter Property="FontSize"
+                    Value="24" />
+            <Setter Property="FontWeight"
+                    Value="Normal" />
+            <Setter Property="TextWrapping"
+                    Value="NoWrap" />
+            <Setter Property="TextTrimming"
+                    Value="None" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0"
+                                      BlurRadius="8"
+                                      Color="#FF859cff"
+                                      Opacity="0.8" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="GlowingScrollViewerStyle" TargetType="ScrollViewer">
             <Setter Property="Background" Value="#FF000C18"/>
             <Setter Property="BorderBrush" Value="#FF84FFD9"/>
@@ -364,7 +388,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource GlowingTextBlockStyle}"/>
+        <Style TargetType="TextBlock"
+               BasedOn="{StaticResource GlowingTextBlockStyle}" />
     </Window.Resources>
 
     <Grid Margin="15">
@@ -374,14 +399,43 @@
                            FontSize="18" 
                            FontWeight="Bold" 
                            HorizontalAlignment="Center" 
-                           Margin="0,0,0,15"/>
+                           Margin="0,0,0,15"
+                            />
 
-                <TextBlock 
-                           FontWeight="Bold" 
-                           Margin="0,0,0,5"><Run Language="ru-ru" Text="К"/><Run Text="ак дрочить в баночку:"/></TextBlock>
-
-                <TextBlock 
-                           Margin="20,0,0,2"><Run Text="1. "/><Run Text="Взять баночку"/><LineBreak/><Run Text="2. Начать дрочить"/><LineBreak/><Run Text="3. Продолжать дрочить"/><LineBreak/><Run Text="4."/><Run Text=" "/><Run Text="Кончить в баночку"/><LineBreak/><Run Text="5. Залить на гитхаб"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run Text="Porno"/><LineBreak/><Run/></TextBlock>
+                <TextBlock x:Name="TextBox1"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5" 
+                           TextWrapping="WrapWithOverflow"
+                           />
+                <TextBlock x:Name="TextBox2"
+                           FontWeight="Medium"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
+                <TextBlock x:Name="TextBox3"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
+                <TextBlock x:Name="TextBox4"
+                           FontWeight="Medium"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
+                <TextBlock x:Name="TextBox5"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
+                <TextBlock x:Name="TextBox6"
+                           FontWeight="Medium"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
+                <TextBlock x:Name="TextBox7"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
+                
+                <TextBlock x:Name="TextBox8"
+                           FontWeight="Medium"
+                           Margin="0,0,0,5"
+                           TextWrapping="WrapWithOverflow" />
 
                 <Button Content="Закрыть" 
                         Click="CloseButton_Click"
