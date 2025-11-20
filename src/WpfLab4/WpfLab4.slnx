@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="../../tests/TestsLab4/TestsLab4.csproj" Id="23572cda-971c-4821-97a6-b4e80e6cd7a5" />
   <Project Path="ClassLab4/ClassLab4.csproj" />
   <Project Path="WpfLab4/WpfLab4.csproj" />
 </Solution>
