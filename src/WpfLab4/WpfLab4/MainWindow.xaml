@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfLab4"
+        xmlns:local="clr-namespace:WpfLab4.Converters"
         mc:Ignorable="d"
         Title="Лабораторная работа №4" Height="635" Width="810" Background="#FF000C18" ResizeMode="NoResize">
     <Window.Resources>
-
         <Style x:Key="GlowButtonStyle" TargetType="Button">
             <Setter Property="BorderBrush" Value="#FF84FFD9"/>
             <Setter Property="FontFamily" Value="Courier New"/>
@@ -1781,6 +1780,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <local:NullToVisibilityConverter x:Key="NullConverter" />
     </Window.Resources>
     <Grid Margin="10">
         
@@ -1877,10 +1877,39 @@ Panel.ZIndex="1000"/>
                             <Style TargetType="TabItem" BasedOn="{StaticResource GlowingTabItemStyle}"/>
                         </TabControl.Resources>
                         <TabItem Header="Таблица истинности">
-                            <DataGrid Style="{StaticResource GlowingDataGridStyle}" ItemsSource="{Binding TruthTable1, Mode=OneWay}"
-                                      AutoGenerateColumns="True"
+                            <DataGrid Style="{StaticResource GlowingDataGridStyle}"
+                                      ItemsSource="{Binding TruthTable1View, Mode=OneWay}"
+                                      AutoGenerateColumns="False"
                                       IsReadOnly="True"
-                                      Margin="5" />
+                                      Margin="5"
+                                      HeadersVisibility="Column">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="A"
+                                                            Binding="{Binding A, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[0], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="B"
+                                                            Binding="{Binding B, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[1], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="C"
+                                                            Binding="{Binding C, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[2], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="D"
+                                                            Binding="{Binding D, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[3], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="E"
+                                                            Binding="{Binding E, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[4], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="Результат"
+                                                        Binding="{Binding Результат, Mode=OneWay}"
+                                                        Width="100" />
+                                </DataGrid.Columns>
+
+                            </DataGrid>
                         </TabItem>
                         <TabItem Header="DNF/KNF">
                             <StackPanel Margin="5">
@@ -1921,10 +1950,37 @@ Panel.ZIndex="1000"/>
                             <Style TargetType="TabItem" BasedOn="{StaticResource GlowingTabItemStyle}"/>
                         </TabControl.Resources>
                         <TabItem Header="Таблица истинности">
-                            <DataGrid Style="{StaticResource GlowingDataGridStyle}" ItemsSource="{Binding TruthTable2, Mode=OneWay}"
-                                      AutoGenerateColumns="True"
+                            <DataGrid Style="{StaticResource GlowingDataGridStyle}"
+                                      ItemsSource="{Binding TruthTable2View, Mode=OneWay}"
+                                      AutoGenerateColumns="False"
                                       IsReadOnly="True"
-                                      Margin="5" />
+                                      Margin="5">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="A"
+                                                            Binding="{Binding A, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[0], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="B"
+                                                            Binding="{Binding B, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[1], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="C"
+                                                            Binding="{Binding C, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[2], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="D"
+                                                            Binding="{Binding D, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[3], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="E"
+                                                            Binding="{Binding E, Mode=OneWay}"
+                                                        Visibility="{Binding UsedVariables1[4], Converter={StaticResource NullConverter}}"
+                                                            Width="30" />
+                                    <DataGridTextColumn Header="Результат"
+                                                        Binding="{Binding Результат, Mode=OneWay}"
+                                                        Width="100" />
+                                </DataGrid.Columns>
+                            </DataGrid> 
                         </TabItem>
                         <TabItem Header="DNF/KNF">
                             <StackPanel Margin="5">

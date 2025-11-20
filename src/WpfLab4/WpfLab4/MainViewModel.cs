@@ -106,6 +106,21 @@ namespace WpfLab4
 
         #region Свойства для привязки данных
 
+        public bool ShowColumnA => TruthTable1View?.Any(x => x.A != null) ?? false;
+        public bool ShowColumnB => TruthTable1View?.Any(x => x.B != null) ?? false;
+        public bool ShowColumnC => TruthTable1View?.Any(x => x.C != null) ?? false;
+        public bool ShowColumnD => TruthTable1View?.Any(x => x.D != null) ?? false;
+        public bool ShowColumnE => TruthTable1View?.Any(x => x.E != null) ?? false;
+        private void UpdateColumnVisibility()
+        {
+            OnPropertyChanged(nameof(ShowColumnA));
+            OnPropertyChanged(nameof(ShowColumnB));
+            OnPropertyChanged(nameof(ShowColumnC));
+            OnPropertyChanged(nameof(ShowColumnD));
+            OnPropertyChanged(nameof(ShowColumnE));
+        }
+
+
         // Входные данные
         private string _function1Input = "A & B";
         public string Function1Input
@@ -140,12 +155,19 @@ namespace WpfLab4
             {
                 _function1 = value;
                 OnPropertyChanged();
+
+                // Обновление ViewModel для таблицы и используемых переменных
+                TruthTable1View = ConvertToViewModel(_function1?.TruthTable);
+                UsedVariables1 = GetUsedVariables(_function1);
+
                 // При изменении функции обновление всех зависимых свойств
                 OnPropertyChanged(nameof(TruthTable1));
                 OnPropertyChanged(nameof(Dnf1));
                 OnPropertyChanged(nameof(Knf1));
                 OnPropertyChanged(nameof(Cost1));
                 OnPropertyChanged(nameof(IsFunction1Valid));
+                
+
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -158,12 +180,19 @@ namespace WpfLab4
             {
                 _function2 = value;
                 OnPropertyChanged();
+
+                // Обновление ViewModel для таблицы и используемых переменных
+                TruthTable2View = ConvertToViewModel(_function2?.TruthTable);
+                UsedVariables2 = GetUsedVariables(_function2);
+
                 // При изменении функции обновление всех зависимых свойств
                 OnPropertyChanged(nameof(TruthTable2));
                 OnPropertyChanged(nameof(Dnf2));
                 OnPropertyChanged(nameof(Knf2));
                 OnPropertyChanged(nameof(Cost2));
                 OnPropertyChanged(nameof(IsFunction2Valid));
+                
+
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -211,6 +240,14 @@ namespace WpfLab4
             }
         }
 
+        // Метод для конвертации
+        private List<TruthTableRowViewModel> ConvertToViewModel(IReadOnlyList<TruthTableRow> truthTable)
+        {
+            if (truthTable == null) return new List<TruthTableRowViewModel>();
+
+            return truthTable.Select(row => new TruthTableRowViewModel(row.Inputs, row.Result)).ToList();
+        }
+
         // Свойство для цвета сообщения об эквивалентности
         //public Brush EquivalenceColor => IsEquivalent ?
         //    new SolidColorBrush(Colors.Green) :
@@ -249,6 +286,70 @@ namespace WpfLab4
                 _statusMessage = value;
                 OnPropertyChanged();
             }
+        }
+
+        // Вывод таблиц для Функции 1
+        private List<TruthTableRowViewModel> _truthTable1View;
+        public List<TruthTableRowViewModel> TruthTable1View
+        {
+            get => _truthTable1View;
+            private set
+            {
+                _truthTable1View = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Вывод таблиц для Функции 2
+        private List<TruthTableRowViewModel> _truthTable2View;
+        public List<TruthTableRowViewModel> TruthTable2View
+        {
+            get => _truthTable2View;
+            private set
+            {
+                _truthTable2View = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Метод для определения использованных переменные в функции 1
+        private List<string> _usedVariables1 = new List<string>();
+        public List<string> UsedVariables1
+        {
+            get => _usedVariables1;
+            private set
+            {
+                _usedVariables1 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Метод для определения использованных переменные в функции 2
+        private List<string> _usedVariables2 = new List<string>();
+        public List<string> UsedVariables2
+        {
+            get => _usedVariables2;
+            private set
+            {
+                _usedVariables2 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Метод для определения используемых переменных
+        private List<string> GetUsedVariables(LogicalFunction function)
+        {
+            if (function == null) return new List<string>();
+
+            var usedVars = new List<string>();
+            var variableNames = new[] { "A", "B", "C", "D", "E" };
+
+            for (int i = 0; i < function.VariablesCount && i < variableNames.Length; i++)
+            {
+                usedVars.Add(variableNames[i]);
+            }
+
+            return usedVars;
         }
 
         #endregion
